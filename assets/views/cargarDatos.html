@@ -33,13 +33,16 @@
             <div class="container-fluid ">
               <div class="input-group d-flex justify-content-evenly">
               <div class="col-3 ms-5 ps-5">
-                <select class="form-select text-capitalize text-center" id="pilotos"></select>
+                <select class="form-select text-capitalize text-center" id="pilotos">
+                  <option selected disabled>Seleccione un piloto</option>
+                </select>
               </div>
               <div class="col-1 text-center h3 ms-5 pe-5">
                 <i id="equipo" class="text-capitalize text-white"></i>
               </div>
+              <div id="conf"></div>
               <div class="col-2 pe-5">
-                <input class="resultado text-center fs-5" type="text" id="cargaPuntos" name="cargaPuntos" placeholder="Puntos a sumar">
+                <input class="resultado text-center fs-5" type="text" id="cargaPuntos" name="cargaPuntos" placeholder="Puntos a sumar" maxlength="2">
               </div>
               <div class="col-2 pe-5">
                 <button id="boton" class="btn-dark css-button-sharp--black btn-sm" data-swal-toast-template='#my-template'>Cargar</button>

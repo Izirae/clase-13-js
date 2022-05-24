@@ -32,14 +32,7 @@ function cargar() {
         option.innerHTML = pilotos[i].nombre;
         select.appendChild(option);
     }
-
-    const valor = document.getElementById("pilotos").value
-    console.log(valor)
-    pilotos.forEach(elemento => {
-            if(elemento.nombre == valor){
-                document.getElementById("equipo").innerText = elemento.escuderia;
-            }
-        })
+    document.getElementById("equipo").innerText = "Escuderia";
 }
 
 function cargarPuntos(){
@@ -52,7 +45,7 @@ function cargarPuntos(){
                 icon: 'error',
                 text: 'Ingresó un valor erróneo (min. 1, max. 26)',
                 timer: 3000,
-                position: 'bottom-end',
+                position: 'center',
                 showConfirmButton: false,
                 color: '#ffffff',
                 timerProgressBar: true,
@@ -65,6 +58,7 @@ function cargarPuntos(){
                     Swal.fire({
                         title: 'Confirmar',
                         icon: 'question',
+                        target: '#conf',
                         iconColor:'#d33',
                         text: '¿Está seguro de agregar ' + suma + ' puntos, al piloto ' + valor + '?', 
                         confirmButtonText: 'Sí',
@@ -159,7 +153,7 @@ cargar()
 crearTabla()
 
 const lista = document.getElementById("pilotos")
-lista.onclick = () => {
+lista.onchange = () => {
     const valor = document.getElementById("pilotos").value
     pilotos.forEach(elemento => {
         if(elemento.nombre == valor){

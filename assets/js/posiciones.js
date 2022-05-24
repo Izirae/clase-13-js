@@ -1,11 +1,29 @@
-let pilotos = [
-    {posicion: 0, nombre: "l. hamilton", escuderia: "mercedes", puntos: 28},
-    {posicion: 0, nombre: "g. russell", escuderia: "mercedes", puntos: 49},
-    {posicion: 0, nombre: "m. verstappen", escuderia: "red bull", puntos: 59},
-    {posicion: 0, nombre: "s. perez", escuderia: "red bull", puntos: 54},
-    {posicion: 0, nombre: "c. leclerc", escuderia: "ferrari", puntos: 86},
-    {posicion: 0, nombre: "c. sainz jr.", escuderia: "ferrari", puntos: 38},
-    {posicion: 0, nombre: "l. norris", escuderia: "mclaren", puntos: 35}];
+// let pilotos = [
+//     {posicion: 0, nombre: "l. hamilton", escuderia: "mercedes", puntos: 28},
+//     {posicion: 0, nombre: "g. russell", escuderia: "mercedes", puntos: 49},
+//     {posicion: 0, nombre: "m. verstappen", escuderia: "red bull", puntos: 59},
+//     {posicion: 0, nombre: "s. perez", escuderia: "red bull", puntos: 54},
+//     {posicion: 0, nombre: "c. leclerc", escuderia: "ferrari", puntos: 86},
+//     {posicion: 0, nombre: "c. sainz jr.", escuderia: "ferrari", puntos: 38},
+//     {posicion: 0, nombre: "l. norris", escuderia: "mclaren", puntos: 35}];
+let pilotos = []
+// async function traerPilotos(){
+
+//     await fetch('http://ergast.com/api/f1/current/driverStandings.json')
+
+//     .then((response) => response.json())
+//     .then((data) => {
+//     // data.MRData.StandingsTable.StandingsLists[0].DriverStandings.forEach((race) => {
+//         // console.log(race)
+//     // .then( (resp) => resp.json() )
+//     // .then( (data) => {
+//     //     console.log(data["MRData"]["StandingsTable"]["StandingsLists"][0]["DriverStandings"][0].Driver)
+//     // })
+//     let pilotos = data.MRData.StandingsTable.StandingsLists[0].DriverStandings
+//         // console.log(pilotos, "pilotos")
+//     return pilotos
+// })
+// }
 
 function borrarTabla(){
     let columna = table.rows.length;
@@ -14,10 +32,19 @@ function borrarTabla(){
         }
 }
     
-function crearTabla(){
+async function crearTabla(){
     
+    await fetch('http://ergast.com/api/f1/current/driverStandings.json')
+
+    .then((response) => response.json())
+    .then((data) => {
+    data.MRData.StandingsTable.StandingsLists[0].DriverStandings.forEach((race) => {
+        pilotos.push(race)
+    })
+    })
+
+    console.log(pilotos, "pilotos tabla")
     borrarTabla()
-    
     const table = document.getElementById('table');
     
     pilotos.forEach(item => {
@@ -29,10 +56,10 @@ function crearTabla(){
         const td3 = document.createElement('td');
         const td4 = document.createElement('td');
     
-        const pos = document.createTextNode(item.posicion);
-        const name = document.createTextNode(item.nombre)
-        const esc = document.createTextNode(item.escuderia)
-        const puntos = document.createTextNode(item.puntos)
+        const pos = document.createTextNode(item.position);
+        const name = document.createTextNode(item.Driver.givenName + ' ' + item.Driver.familyName)
+        const esc = document.createTextNode(item.Constructors[0].name)
+        const puntos = document.createTextNode(item.points)
     
         td1.appendChild(pos);
         td2.appendChild(name)
@@ -83,38 +110,6 @@ function buscarPiloto() {
     })
 }
     
-
-function actualizarDatos(){
-    let pilotosLocal = JSON.parse(sessionStorage.getItem('pilotos'))
-        pilotosLocal !== null ? pilotos = [...pilotosLocal] : console.log(pilotosLocal, "esta vacio")
-}    
-
-function extTopTres (){
-
-    const [piloto1, piloto2, piloto3] = pilotos.map(item => item.nombre)
-    console.log("Desestructuracion de pilotos", piloto1, piloto2, piloto3)
-    sessionStorage.setItem("topTresN", JSON.stringify([piloto1, piloto2, piloto3]));
-
-    const [esc1, esc2, esc3] = pilotos.map(item => item.escuderia)
-    console.log("Desestructuracion de pilotos", esc1, esc2, esc3)
-    sessionStorage.setItem("topTresE", JSON.stringify([esc1, esc2, esc3]));
-
-    const [puntos1, puntos2, puntos3] = pilotos.map(item => item.puntos)
-    console.log("Desestructuracion de pilotos", puntos1, puntos2, puntos3)
-    sessionStorage.setItem("topTresP", JSON.stringify([puntos1, puntos2, puntos3]));
-}
-
-actualizarDatos()
-console.log(pilotos)
-
-pilotos.sort((a, b) => {return b.puntos - a.puntos;});
-
-extTopTres()
-
-for(let i = 0; i < pilotos.length; i++){
-    pilotos[i].posicion = i + 1
-}
-
 crearTabla()
 
 let boton = document.getElementById("botonAdd")
